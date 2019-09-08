@@ -6,9 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="blog2" />
-        <module name="blog2.0" />
+        <module name="back-end" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="back-end" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="back-end" options="-parameters" />
+    </option>
   </component>
 </project>

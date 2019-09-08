@@ -1,0 +1,26 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为80
+  port: 8000
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # tomcat最大线程数，默认为200
+    max-threads: 800
+    # Tomcat启动初始化的线程数，默认值25
+    min-spare-threads: 30
+
+#设置提供的服务名
+spring:
+  #配置数据库
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.107.80.19:3306/blog2?useUnicode=true&characterEncoding=utf8
+    username:
+    password:
+
+mybatis-plus:
+  #  dao-locations: classpath:mybatis/**/*Mapper.xml
+  mapper-locations: classpath*:mybatis/**/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.blog2.backend
