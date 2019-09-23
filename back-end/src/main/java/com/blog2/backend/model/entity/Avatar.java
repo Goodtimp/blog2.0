@@ -9,29 +9,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
+/**
+ * @Author: goodtimp
+ * @Date: 2019/9/19 17:21
+ * @description :  用户头像表
+ */
 @Data
-@TableName("category")
+@TableName("avatar")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends BaseEntity {
-
+public class Avatar extends BaseEntity {
     @TableId
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long categoryId;
+    private Long avatarId;
 
-    @NotNull(message = "category不允许为空")
-    private String categoryName;
+    @NotNull
+    private String avatarPath;
 
-    @NotNull(message = "分类标记图不允许为空")
-    private String categoryImage;
-
-    @NotNull(message = "排序顺序不允许为空")
-    private Integer sortNumber;
-
-    // 删除标记 1为删除 0为正常
-    private Integer delFlag = 0;
-
+    @NotNull
+    private String avatarName;
 
 }

@@ -8,30 +8,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
+/**
+ * @Author: goodtimp
+ * @Date: 2019/9/19 17:22
+ * @description : 标签
+ */
 @Data
-@TableName("category")
+@TableName("tag")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends BaseEntity {
-
+public class Tag extends BaseEntity {
     @TableId
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long categoryId;
+    private Long tagId;
 
-    @NotNull(message = "category不允许为空")
-    private String categoryName;
+    @NotNull
+    private String tagName;
 
-    @NotNull(message = "分类标记图不允许为空")
-    private String categoryImage;
-
-    @NotNull(message = "排序顺序不允许为空")
-    private Integer sortNumber;
-
-    // 删除标记 1为删除 0为正常
-    private Integer delFlag = 0;
-
-
+    @NotNull
+    @Min(0)
+    private Integer tagNumber;
 }
