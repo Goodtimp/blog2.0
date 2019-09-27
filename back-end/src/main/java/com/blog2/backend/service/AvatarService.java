@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date: 2019/9/24 19:18
  * @description :  头像列表（用于游客评论时的头像）
  */
-@Service
+
 public interface AvatarService extends IService<Avatar> {
 }

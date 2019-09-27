@@ -4,6 +4,8 @@ import com.blog2.backend.model.entity.User;
 import com.blog2.backend.redis.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BackendApplicationTests {
     @Autowired
     private RedisUtil redisUtil;
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
     public void contextLoads() {
@@ -35,5 +38,10 @@ public class BackendApplicationTests {
     public void testRedis2() {
         redisUtil.set("1", "1");
         redisUtil.get("1");
+    }
+
+    @Test
+    public void testLog() {
+        logger.error("1123");
     }
 }

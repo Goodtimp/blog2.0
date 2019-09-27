@@ -7,9 +7,10 @@ import com.blog2.backend.model.entity.Category;
 import com.blog2.backend.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 @RequiredArgsConstructor(onConstructor = @_(@Autowired))
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
 

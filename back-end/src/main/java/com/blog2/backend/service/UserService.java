@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date: 2019/9/24 19:22
  * @description :  用户管理
  */
-@Service
+
 public interface UserService extends IService<User> {
 }

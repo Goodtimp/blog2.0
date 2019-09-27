@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
  * @Date: 2019/9/24 19:23
  * @description :  评论反馈表
  */
-@Service
+
 public interface CommentFeedbackService extends IService<CommentFeedback> {
 }

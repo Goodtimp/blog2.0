@@ -6,10 +6,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -20,20 +21,11 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryServiceImpl;
 
-    @ApiOperation(value = "获取所有分类并排序", notes = "获取所有分类后并根据orderNum排序")
+    @ApiOperation(value = "获取所有分类并排序", notes = "获取所有分类后并根据ResponseBodyOrderNum排序")
     @GetMapping("/getAll")
     @ResponseBody
     public List<Category> getAllCategory() {
         return categoryServiceImpl.getAllCategory();
     }
 
-    @ApiOperation(value = "添加分类")
-    @PostMapping("/save")
-    @ResponseBody
-    public String insert(@RequestBody @Valid Category category, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "2";
-        }
-        return "3";
-    }
 }
