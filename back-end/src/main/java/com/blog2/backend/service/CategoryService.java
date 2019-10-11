@@ -1,9 +1,8 @@
 package com.blog2.backend.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.blog2.backend.model.entity.Category;
-
-import java.util.List;
 
 public interface CategoryService extends IService<Category> {
     /**
@@ -11,7 +10,7 @@ public interface CategoryService extends IService<Category> {
      *
      * @return
      */
-    List<Category> getAllCategory();
+    IPage<Category> getAllCategory();
 
     /**
      * 新增

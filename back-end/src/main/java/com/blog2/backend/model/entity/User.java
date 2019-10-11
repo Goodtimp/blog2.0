@@ -44,4 +44,9 @@ public class User extends BaseEntity {
     private Integer permission;
 
     private String avatar;
+
+    /**
+     * 密码加盐
+     */
+    private String salt;
 }

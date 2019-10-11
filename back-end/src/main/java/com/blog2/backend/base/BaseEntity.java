@@ -1,5 +1,6 @@
 package com.blog2.backend.base;
 
+import com.blog2.backend.Common.Tools;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -35,6 +36,13 @@ public class BaseEntity {
     // 备注
     private String remark;
 
-//    public void setUpdate(){
-//    }
+    public void setUpdate() {
+        // user
+        this.updateTime = Tools.getGMT8Time();
+    }
+    public void setCreate() {
+        // user
+        this.updateTime = Tools.getGMT8Time();
+        this.createTime = Tools.getGMT8Time();
+    }
 }

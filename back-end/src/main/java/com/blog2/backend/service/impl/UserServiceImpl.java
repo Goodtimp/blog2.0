@@ -1,10 +1,12 @@
 package com.blog2.backend.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.blog2.backend.Common.Tools;
 import com.blog2.backend.dao.UserMapper;
 import com.blog2.backend.model.entity.User;
 import com.blog2.backend.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 /**
  * @Author: goodtimp
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
     @Override
     public User getUserByPhone(String phone) {
         return null;
@@ -35,7 +38,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User signIn(User user) {
-        return null;
+        user.setSalt(Tools.getRandomString(20)); // 获取长度为20的盐
+        String saltPass = user.getUserPassword() + user.getSalt();
+        user.setUserPassword(DigestUtils.md5DigestAsHex(saltPass.getBytes()));
+        user.setCreate();
+        this.save(user);
+        return user;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.blog2.backend.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.blog2.backend.model.entity.Category;
 import com.blog2.backend.service.CategoryService;
 import io.swagger.annotations.Api;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 
 @Api("文章分类管理")
@@ -24,7 +23,7 @@ public class CategoryController {
     @ApiOperation(value = "获取所有分类并排序", notes = "获取所有分类后并根据ResponseBodyOrderNum排序")
     @GetMapping("/getAll")
     @ResponseBody
-    public List<Category> getAllCategory() {
+    public IPage<Category> getAllCategory() {
         return categoryServiceImpl.getAllCategory();
     }
 

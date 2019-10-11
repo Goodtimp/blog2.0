@@ -8,6 +8,8 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -18,7 +20,7 @@ import javax.security.auth.login.AccountNotFoundException;
  * @description :  shiro认证
  */
 
-public class ShiroReam extends AuthorizingRealm {
+public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userServiceImpl;
@@ -27,6 +29,8 @@ public class ShiroReam extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         return null;
     }
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 登录认证,验证用户名密码是否正确
@@ -41,6 +45,8 @@ public class ShiroReam extends AuthorizingRealm {
         String username = usernamePasswordToken.getUsername();
         String password = usernamePasswordToken.getPassword().toString();
 
+        logger.debug("用户登陆账号：" + username);
+        logger.debug("用户登陆密码：" + password);
         if (StringUtils.isEmpty(username)) {
             throw new AccountException("用户名不能为空");
         }
