@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 public interface UserService extends IService<User> {
     /**
-     * 通过phone或者name得到用户
+     * 通过phone得到用户
      *
      * @param phone
      * @return
@@ -26,24 +26,16 @@ public interface UserService extends IService<User> {
      * @param password
      * @return 成功返回User对象，失败返回null
      */
+
     User login(String phone, String password);
 
     /**
      * 通过name登录
      *
      * @param name
-     * @param password
      * @return
      */
-    User loginByName(String name, String password);
-    /**
-     * 通过phone登录
-     *
-     * @param phone
-     * @param password
-     * @return
-     */
-    User loginByPhone(String phone, String password);
+    User getUserByName(String name);
 
     /**
      * 注册

@@ -1,18 +1,26 @@
 package com.blog2.backend.controller;
 
 import com.blog2.backend.Common.ResponseModel;
+import com.blog2.backend.model.entity.User;
+import com.blog2.backend.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+@Api("测试")
 @RestController
+@RequiredArgsConstructor(onConstructor = @_(@Autowired))
 public class HelloController {
+
+    final private UserService userServiceImpl;
 
     @GetMapping("/")
     @ResponseBody
@@ -37,11 +45,24 @@ public class HelloController {
             subject.login(token); // 如果不报错则成功
 
             return ResponseModel.success("token", token);
-        } catch (UnknownAccountException e) {
-            return ResponseModel.fail("用户名不存在");
+        } catch (AccountException e) {
+            return ResponseModel.fail(e.getMessage());
         } catch (IncorrectCredentialsException e) {
-            return ResponseModel.fail("密码错误");
+            return ResponseModel.fail("Shiro密码错误");
         }
 
     }
+
+    @ApiOperation(value = "注册", notes = "注册用户")
+    @PostMapping("signIn")
+    @ResponseBody
+    public ResponseModel signIn(@RequestBody User user) {
+        User sqlUser = userServiceImpl.signIn(user);
+        if (sqlUser == null) {
+            return ResponseModel.fail("账号已存在");
+        }
+        return ResponseModel.success("注册成功");
+    }
+
+
 }

@@ -12,7 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration //使用配置类注解
-//@EnableSwagger2 //启用这个配置类
+@EnableSwagger2 //启用这个配置类
 public class Swagger2Config {
     /**
      * @Description:swagger2的配置文件，这里可以配置swagger2的一些基本的内容，比如扫描的包等等

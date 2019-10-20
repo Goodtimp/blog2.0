@@ -1,6 +1,7 @@
 package com.blog2.backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.blog2.backend.model.entity.UserBehavior;
 
 /**
  * @Author: goodtimp
@@ -8,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @description :  用户行为
  */
 
-public interface UserBehaviorService extends IService<UserBehaviorService> {
+public interface UserBehaviorService extends IService<UserBehavior> {
 }

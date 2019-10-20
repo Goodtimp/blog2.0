@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2019/10/9 9:17
  * @description :
  */
-@SuppressWarnings("all") //压制所有警告
 @Configuration
 public class ShiroConfig {
     /**
@@ -24,8 +23,8 @@ public class ShiroConfig {
      * @param securityManager
      * @return
      */
-    @Bean(name = "shiroFilterFactoryBean")
-    public ShiroFilterFactoryBean shirFilter(@Qualifier("securityManager") DefaultWebSecurityManager securityManager) {
+    @Bean(name = "shiroFilter")
+    public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);        //设置安全管理器
         /**
@@ -90,7 +89,7 @@ public class ShiroConfig {
     public HashedCredentialsMatcher matcher() {
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
         matcher.setHashAlgorithmName("md5"); //设置加密算法
-        matcher.setHashIterations(1);//设置加密算法的次数
+        matcher.setHashIterations(2);//设置加密算法的次数
         return matcher;
     }
 

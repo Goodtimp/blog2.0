@@ -7,6 +7,7 @@ import com.blog2.backend.dao.UserMapper;
 import com.blog2.backend.enums.DelFlag;
 import com.blog2.backend.model.entity.User;
 import com.blog2.backend.service.UserService;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -24,10 +25,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Deprecated
     public User login(String username, String password) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(User::getUserName, username).eq(User::getDelFlag, DelFlag.NORMAL.getCode());
         User user = this.getOne(queryWrapper);
+        if (user == null) return null;
         String loginPassword = DigestUtils.md5DigestAsHex(addSaltForPassword(password, user.getSalt()).getBytes());
         if (loginPassword.equals(user.getUserPassword())) {
             return user;
@@ -35,21 +38,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return null;
     }
 
-    @Override
-    public User loginByPhone(String phone, String password) {
-        return null;
-    }
 
     @Override
-    public User loginByName(String name, String password) {
-        return null;
+    public User getUserByName(String name) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getUserName, name).eq(User::getDelFlag, DelFlag.NORMAL.getCode());
+        return this.getOne(queryWrapper);
     }
 
     @Override
     public User signIn(User user) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getDelFlag, DelFlag.NORMAL.getCode())
+                .and(e -> e.eq(User::getPhone, user.getPhone())
+                        .or().eq(User::getUserName, user.getUserName())
+                        .or().eq(User::getUserName, user.getPhone())
+                        .or().eq(User::getPhone, user.getUserName()));
+        User sqlUser = this.getOne(queryWrapper);
+        if (sqlUser != null) {
+            return null;
+        }
+
         user.setSalt(Tools.getRandomString(20)); // 获取长度为20的盐
-        String saltPass = user.getUserPassword() + user.getSalt();
-        user.setUserPassword(DigestUtils.md5DigestAsHex(saltPass.getBytes()));
+        String saltPass = addSaltForPassword(user.getUserPassword(), user.getSalt());// shiro中加密必须要用Md5Hash
+        user.setUserPassword(saltPass);
+        user.setPermission(1); // 普通用户注册
         user.setCreate();
         this.save(user);
         return user;
@@ -62,6 +75,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     private String addSaltForPassword(String password, String salt) {
-        return password + salt;
+        return new Md5Hash(password, salt, 2).toString();// shiro中加密必须要用Md5Hash
     }
 }

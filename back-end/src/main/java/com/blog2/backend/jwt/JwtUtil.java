@@ -18,7 +18,7 @@ public class JwtUtil {
     private static final long EXPIRE_TIME = 5 * 60 * 1000;
 
     /**
-     * 校验token是否正确
+     * 校验token是否正确,用 用户 个人密码作为密钥
      *
      * @param token  密钥
      * @param secret 用户的密码
@@ -32,7 +32,8 @@ public class JwtUtil {
                     .withClaim("username", username)
                     .build();
             //效验TOKEN
-            DecodedJWT jwt = verifier.verify(token);
+            verifier.verify(token);
+//            DecodedJWT jwt = verifier.verify(token);
             return true;
         } catch (Exception exception) {
             return false;

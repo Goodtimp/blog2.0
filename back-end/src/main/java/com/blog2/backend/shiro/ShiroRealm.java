@@ -3,10 +3,13 @@ package com.blog2.backend.shiro;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.blog2.backend.model.entity.User;
 import com.blog2.backend.service.UserService;
+import com.sun.tracing.dtrace.ArgsAttributes;
+import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +42,8 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
-        String username = usernamePasswordToken.getUsername();
-        String password = usernamePasswordToken.getPassword().toString();
+        String username = (String) usernamePasswordToken.getPrincipal();
+        String password = new String((char[]) (usernamePasswordToken.getCredentials()));  // 无法通过.toString转换
 
         logger.debug("用户登陆账号：" + username);
         logger.debug("用户登陆密码：" + password);
@@ -50,13 +53,12 @@ public class ShiroRealm extends AuthorizingRealm {
         if (StringUtils.isEmpty(password)) {
             throw new AccountException("密码不能为空");
         }
-        User user = userServiceImpl.login(username, password);
+        User user = userServiceImpl.getUserByName(username);
         if (user == null) {
             throw new UnknownAccountException("用户名或密码不正确");
         }
-
         // user.getUserPassword() 应该是数据库对应的加密后的密码字段
-        return new SimpleAuthenticationInfo(user, user.getUserPassword(), user.getUserName());
+        return new SimpleAuthenticationInfo(user, user.getUserPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
         // principal:用户主体（代表用户，可用id,username,或者一个实例对象）
         // credentials:用户凭证（使用从数据库中查询出来的密码）
         // realmName:获取主体和凭据的域：调用父类方法getName()即可获得。
