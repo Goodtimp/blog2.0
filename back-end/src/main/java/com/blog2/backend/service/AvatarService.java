@@ -2,7 +2,6 @@ package com.blog2.backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.blog2.backend.model.entity.Avatar;
-import org.springframework.stereotype.Service;
 
 /**
  * @Author: goodtimp

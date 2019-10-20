@@ -1,7 +1,6 @@
 package com.blog2.backend.shiro;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.blog2.backend.Common.FormatCheck;
 import com.blog2.backend.model.entity.User;
 import com.blog2.backend.service.UserService;
 import org.apache.shiro.authc.*;
@@ -12,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.security.auth.login.AccountNotFoundException;
-
 /**
  * @Author: goodtimp
  * @Date: 2019/10/7 20:46
@@ -22,6 +19,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 public class ShiroRealm extends AuthorizingRealm {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private UserService userServiceImpl;
 
@@ -30,7 +28,6 @@ public class ShiroRealm extends AuthorizingRealm {
         return null;
     }
 
-    Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 登录认证,验证用户名密码是否正确
