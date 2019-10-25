@@ -23,10 +23,7 @@ import static com.blog2.backend.enums.TokenEnum.SHIRO_CACHE_EXPIRE_TIME;
  * @author dolyw.com
  * @date 2018/9/4 17:31
  */
-@RequiredArgsConstructor(onConstructor = @_(@Autowired))
 public class CustomCache<K, V> implements Cache<K, V> {
-    private final RedisUtil redisUtil;
-
     /**
      * 缓存的key名称获取为shiro:cache:account
      *

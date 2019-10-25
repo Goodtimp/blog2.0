@@ -15,6 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class CustomCacheManager implements CacheManager {
     @Override
     public <K, V> Cache<K, V> getCache(String s) throws CacheException {
-        return new CustomCache<K, V>(new RedisUtil(new RedisTemplate<String, Object>()));
+        return new CustomCache<K, V>();
     }
 }

@@ -2,12 +2,9 @@ package com.blog2.backend.shiro;
 
 import com.blog2.backend.common.utils.StringUtil;
 import com.blog2.backend.enums.RedisEnum;
-import com.blog2.backend.enums.TokenEnum;
 import com.blog2.backend.jwt.JwtToken;
 import com.blog2.backend.jwt.JwtUtil;
-import com.blog2.backend.model.entity.User;
 import com.blog2.backend.redis.RedisUtil;
-import com.blog2.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -22,8 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.blog2.backend.enums.TokenEnum.PAYLOAD_ROLE_TAG;
 import static com.blog2.backend.enums.TokenEnum.PAYLOAD_USER_TAG;
 
@@ -37,8 +32,6 @@ import static com.blog2.backend.enums.TokenEnum.PAYLOAD_USER_TAG;
 public class ShiroRealm extends AuthorizingRealm {
 
     Logger logger = LoggerFactory.getLogger(getClass());
-    final private UserService userServiceImpl;
-    final private RedisUtil redisUtil;
 
     /**
      * 必须重写此方法，不然Shiro会报错
@@ -91,7 +84,7 @@ public class ShiroRealm extends AuthorizingRealm {
 //            throw new AuthenticationException("该帐号不存在(The account does not exist.)");
 //        }
         // 开始认证，要AccessToken认证通过，且Redis中存在RefreshToken，且两个Token时间戳一致
-        String refreshToken = (String) redisUtil.get(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + userId);
+        String refreshToken = (String) RedisUtil.get(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + userId);
         if (JwtUtil.verify(token) && JwtUtil.judgeRefreshToken(token, refreshToken)) {
             return new SimpleAuthenticationInfo(token, token, "userRealm");
         }

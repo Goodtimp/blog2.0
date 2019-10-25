@@ -2,23 +2,14 @@ package com.blog2.backend.controller;
 
 import com.blog2.backend.common.model.ResponseModel;
 import com.blog2.backend.enums.RedisEnum;
-import com.blog2.backend.exception.UserException;
-import com.blog2.backend.jwt.JwtToken;
 import com.blog2.backend.jwt.JwtUtil;
 import com.blog2.backend.model.entity.User;
 import com.blog2.backend.redis.RedisUtil;
 import com.blog2.backend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AccountException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,8 +19,6 @@ import static com.blog2.backend.enums.TokenEnum.REFRESH_TOKEN_EXPIRE_TIME;
 @Api("测试")
 @RestController
 public class HelloController {
-    @Autowired
-     private RedisUtil redisUtil;
     @Autowired
      private UserService userServiceImpl;
 
@@ -57,8 +46,8 @@ public class HelloController {
         String currentTimeMillis = String.valueOf(System.currentTimeMillis());
         String token = JwtUtil.sign(user.getUserId().toString(), currentTimeMillis);
         // refreshToken
-        redisUtil.set(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + user.getUserId().toString(),
-                currentTimeMillis, Long.parseLong(REFRESH_TOKEN_EXPIRE_TIME.getCode()));
+        RedisUtil.set(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + user.getUserId().toString(),
+                currentTimeMillis, Long.parseLong(REFRESH_TOKEN_EXPIRE_TIME.getCode())*1000L);
         // 修改sAuthorization返回AccessToken，时间戳为当前时间戳
         httpServletResponse.setHeader("Authorization", token);
         httpServletResponse.setHeader("Access-Control-Expose-Headers", "Authorization");

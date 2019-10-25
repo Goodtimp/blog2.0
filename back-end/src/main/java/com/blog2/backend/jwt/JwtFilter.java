@@ -15,11 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.print.DocFlavor;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +39,7 @@ import static com.blog2.backend.enums.TokenEnum.PAYLOAD_USER_TAG;
  */
 @Component
 public class JwtFilter extends BasicHttpAuthenticationFilter {
-    @Autowired
-    private RedisUtil redisUtil;
+
 
     /**
      * logger
@@ -169,11 +171,12 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         // 获取当前Token的帐号信息
         String userId = JwtUtil.getClaim(token, PAYLOAD_USER_TAG.getCode());
         // 判断Redis中RefreshToken是否存在是否与传入的token匹配
-        if (JwtUtil.judgeRefreshToken(token, (String) redisUtil.get(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + userId))) {
+
+        if (JwtUtil.judgeRefreshToken(token, RedisUtil.get(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + userId).toString())) {
             // 获取当前最新时间戳
             String currentTimeMillis = String.valueOf(System.currentTimeMillis());
             // 设置RefreshToken中的时间戳为当前最新时间戳 ,不重置过期时间
-            redisUtil.setAndNotExpire(userId, currentTimeMillis);
+            RedisUtil.setAndNotExpire(RedisEnum.REFRESH_TOKEN_PREFIX.getCode() + userId, currentTimeMillis);
             // 刷新AccessToken，设置时间戳为当前最新时间戳
             token = JwtUtil.sign(userId, currentTimeMillis);
             // 将新刷新的AccessToken再次进行Shiro的登录
