@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * @description :  用户头像表
  */
 @Data
-@TableName("avatar")
+@TableName("sys_avatar")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Avatar extends BaseEntity {

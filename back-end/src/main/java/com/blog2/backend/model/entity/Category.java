@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 @Data
-@TableName("category")
+@TableName("blog_category")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category extends BaseEntity {

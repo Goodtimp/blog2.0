@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
  * @description :  用户表
  */
 @Data
-@TableName("user")
+@TableName("blog_user")
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "用户实体类")

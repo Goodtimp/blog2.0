@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
  * @description :  评论回复关联表
  */
 @Data
-@TableName("comment_feedback")
+@TableName("blog_comment_feedback")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentFeedback extends BaseEntity {

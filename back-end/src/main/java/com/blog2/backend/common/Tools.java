@@ -1,4 +1,4 @@
-package com.blog2.backend.Common;
+package com.blog2.backend.common;
 
 import org.springframework.util.DigestUtils;
 

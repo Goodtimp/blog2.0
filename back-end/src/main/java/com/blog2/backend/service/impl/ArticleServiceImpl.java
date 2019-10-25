@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.blog2.backend.dao.ArticleMapper;
-import com.blog2.backend.enums.DelFlag;
+import com.blog2.backend.enums.DelFlagEnum;
 import com.blog2.backend.model.entity.Article;
 import com.blog2.backend.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Qualifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public IPage<Article> getByCategoryId(Page<Article> page, Long id) {
         QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(id > 0, Article::getArticleId, id).eq(Article::getDelFlag, DelFlag.NORMAL.getCode());
+        queryWrapper.lambda().eq(id > 0, Article::getArticleId, id).eq(Article::getDelFlag, DelFlagEnum.NORMAL.getCode());
         return articleMapper.selectPage(page, queryWrapper);
     }
 
@@ -34,7 +33,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public void addArticle(Article article) {
         article.setArticleId(null);
         article.setCreate();
-        article.setDelFlag(DelFlag.NORMAL.getCode());
+        article.setDelFlag(DelFlagEnum.NORMAL.getCode());
         this.save(article);
     }
 
@@ -42,7 +41,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public void updateArticle(Article article) {
         if (article.getArticleId() != null) {
             article.setUpdate();
-            article.setDelFlag(DelFlag.NORMAL.getCode());
+            article.setDelFlag(DelFlagEnum.NORMAL.getCode());
             this.updateById(article);
         }
     }

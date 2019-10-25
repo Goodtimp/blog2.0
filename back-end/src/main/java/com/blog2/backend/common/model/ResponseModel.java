@@ -1,4 +1,4 @@
-package com.blog2.backend.Common;
+package com.blog2.backend.common.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
  * @description :  响应模板
  */
 public class ResponseModel {
-    private static final int SUCCESS_CODE = 0;
+    private static final int SUCCESS_CODE = 200;
     private static final String SUCCESS_MSG = "操作成功！";
     private static final int FAIL_CODE = 1;
     private static final String FAIL_MSG = "操作失败！";
@@ -105,6 +105,33 @@ public class ResponseModel {
         ResponseModel responseModel = new ResponseModel();
         responseModel.setCode(FAIL_CODE);
         responseModel.setMsg(FAIL_MSG);
+        return responseModel;
+    }
+
+    /**
+     * 失败操作 默认提示
+     *
+     * @param code 错误代码
+     * @return
+     */
+    public static ResponseModel fail(int code) {
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setCode(code);
+        responseModel.setMsg(FAIL_MSG);
+        return responseModel;
+    }
+
+    /**
+     * 失败操作 默认提示
+     *
+     * @param code 错误代码
+     * @param msg  错误信息
+     * @return
+     */
+    public static ResponseModel fail(int code, String msg) {
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setCode(code);
+        responseModel.setMsg(msg);
         return responseModel;
     }
 

@@ -1,4 +1,4 @@
-package com.blog2.backend.Common;
+package com.blog2.backend.common;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

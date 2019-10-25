@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("comment")
+@TableName("blog_comment")
 public class Comment extends BaseEntity {
     @TableId
     @JsonFormat(shape = JsonFormat.Shape.STRING)

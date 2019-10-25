@@ -1,14 +1,12 @@
 package com.blog2.backend.redis;
 
+import ch.qos.logback.core.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,9 +16,10 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisUtil {
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+
+    @Autowired
     public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
@@ -68,6 +67,48 @@ public class RedisUtil {
         }
     }
 
+    /**
+     * 得到前缀为传入值所有的key
+     *
+     * @param prefix 要求含有的前缀
+     * @return
+     */
+    public Set getAllKey(String... prefix) {
+        Set<String> keys = new HashSet<>();
+        if (prefix == null || prefix.length == 0) {
+            keys.containsAll(redisTemplate.keys("*"));
+        } else {
+            for (String item : prefix) {
+                keys.containsAll(redisTemplate.keys(item + "*"));
+            }
+        }
+        return keys;
+    }
+
+    /**
+     * 得到前缀为传入值 redis所有中key的数量
+     *
+     * @param prefix 要求含有的前缀
+     * @return
+     */
+    public Integer getAllKeyLength(String... prefix) {
+        return getAllKey(prefix).size();
+    }
+
+    /**
+     * 清除前缀为传入值的所有缓存
+     *
+     * @param prefix
+     * @return
+     */
+    public Integer clear(String... prefix) {
+        Set<String> keys = getAllKey(prefix);
+        for (String item : keys) {
+            redisTemplate.delete(item);
+        }
+        return keys.size();
+    }
+
     // ---------------------- String（普通键值对） ---------------------
 
     /**
@@ -77,7 +118,11 @@ public class RedisUtil {
      * @return 值
      */
     public Object get(String key) {
-        return key == null ? null : redisTemplate.opsForValue().get(key);
+        try {
+            return key == null ? null : redisTemplate.opsForValue().get(key);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -98,17 +143,34 @@ public class RedisUtil {
     }
 
     /**
+     * 修改有时间限制的数据，但是不修改他的过期时间
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public Boolean setAndNotExpire(String key, Object value) {
+        try {
+            this.set(key, value, this.getExpire(key));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * 普通set 设置时间
      *
      * @param key
      * @param value
-     * @param time  time（毫秒）要大于0 如果time小于等于0 将设置无限期
+     * @param time  time（秒）要大于0 如果time小于等于0 将设置无限期
      * @return true 成功  false 失败
      */
     public Boolean set(String key, Object value, Long time) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().set(key, value, time);
+                redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
             } else {
                 set(key, value);
             }

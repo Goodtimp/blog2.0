@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  * @description : 标签
  */
 @Data
-@TableName("tag")
+@TableName("blog_tag")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tag extends BaseEntity {

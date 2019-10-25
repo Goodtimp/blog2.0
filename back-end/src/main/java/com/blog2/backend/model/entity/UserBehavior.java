@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * @description :  用户行为
  */
 @Data
-@TableName("user_behavior")
+@TableName("blog_user_behavior")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserBehavior extends BaseEntity {

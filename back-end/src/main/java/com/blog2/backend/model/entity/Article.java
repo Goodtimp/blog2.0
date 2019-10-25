@@ -18,7 +18,7 @@ import java.util.Date;
  * @description :  文章表
  */
 @Data
-@TableName("article")
+@TableName("blog_article")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Article extends BaseEntity {
