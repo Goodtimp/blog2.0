@@ -11,11 +11,8 @@
       :lg="18"
       :xl="16"
     >
-      <el-card class="box-card">
-        <div
-          slot="header"
-          class="clearfix"
-        >
+      <el-card shadow="hover">
+        <div slot="header" class="clearfix">
           <router-link :to="'/article/'+id">
             <span style="font-size:1.7rem;">{{title}}</span>
           </router-link>

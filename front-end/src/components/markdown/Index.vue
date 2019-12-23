@@ -1,6 +1,6 @@
 <template>
   <mavon-editor
-    style='line-height: 2em;'
+    style='line-height: 2em;box-shadow:none;'
     class='md my-content'
     :value='contents'
     :ishljs='true'

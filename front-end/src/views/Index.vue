@@ -14,6 +14,11 @@
     <div class="my-main my-show-xs-only">
       <router-view></router-view>
     </div>
+  <div style="clear:both;"></div>
+  <div style="text-align:center;padding-left: 200px;margin:20px 0;color:#458">
+    <a href="http://www.beian.miit.gov.cn/" target="_blank">备案号：浙ICP备18046552号-2</a>
+  </div>
+
   </div>
 </template>
 <script>
@@ -49,7 +54,7 @@ body > .el-container {
 .my-main {
   float: right;
   left: 210px;
-  background-color:white;
+  background-color: #fff;
   width: calc(100vw - 220px);
 }
 .my-left-aside {
